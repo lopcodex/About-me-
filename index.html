@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lopcodex — Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#05070d;
+  --surface:#0d1220;
+  --surface2:#111827;
+  --border:#1a2438;
+  --text:#f0f6ff;
+  --muted:#64748b;
+  --sub:#94a3b8;
+  --purple:#7c3aed;
+  --purple-dim:rgba(124,58,237,0.12);
+  --purple-glow:rgba(124,58,237,0.3);
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.12);
+  --blue:#0ea5e9;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;width:100%;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 48px;
+  background:rgba(5,7,13,0.8);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(26,36,56,0.8);
+}
+
+.nav-logo{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;color:var(--purple);
+  text-decoration:none;letter-spacing:0.05em;
+}
+
+.nav-links{display:flex;gap:32px;align-items:center}
+
+.nav-links a{
+  color:var(--muted);text-decoration:none;
+  font-size:13px;font-weight:500;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--text)}
+
+.nav-gh{
+  display:flex;align-items:center;gap:7px;
+  padding:8px 16px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  color:var(--sub);text-decoration:none;
+  font-size:12px;font-weight:500;
+  transition:border-color 0.2s,color 0.2s;
+}
+.nav-gh:hover{border-color:var(--purple);color:var(--text)}
+.nav-gh svg{width:15px;height:15px;fill:currentColor}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  padding:120px 48px 80px;
+  max-width:860px;
+  margin:auto;
+}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--purple);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:28px;
+}
+.hero-tag::before{content:'';width:20px;height:1px;background:var(--purple)}
+
+.hero h1{
+  font-size:clamp(60px,10vw,96px);
+  font-weight:900;
+  line-height:0.95;
+  letter-spacing:-4px;
+  color:var(--text);
+  margin-bottom:12px;
+}
+
+.cursor{
+  display:inline-block;width:5px;height:0.85em;
+  background:var(--purple);vertical-align:middle;
+  margin-left:6px;
+  animation:blink 1s steps(1) infinite;
+}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+.hero-sub{
+  font-size:clamp(15px,2vw,19px);
+  color:var(--sub);font-weight:300;
+  max-width:520px;line-height:1.75;
+  margin-bottom:44px;
+}
+.hero-sub strong{color:var(--text);font-weight:600}
+
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+
+.btn-primary{
+  padding:14px 26px;
+  background:var(--purple);
+  color:#fff;font-weight:700;font-size:13px;
+  border-radius:10px;text-decoration:none;
+  border:none;cursor:pointer;
+  transition:transform 0.15s,box-shadow 0.15s,opacity 0.15s;
+  display:inline-flex;align-items:center;gap:8px;
+  letter-spacing:0.01em;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px var(--purple-glow);opacity:0.9}
+
+.btn-ghost{
+  padding:14px 26px;
+  border:1px solid var(--border);
+  color:var(--sub);font-weight:500;font-size:13px;
+  border-radius:10px;text-decoration:none;
+  background:none;cursor:pointer;
+  transition:border-color 0.2s,color 0.2s,transform 0.15s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-ghost:hover{border-color:var(--purple);color:var(--text);transform:translateY(-2px)}
+
+.status{
+  display:flex;align-items:center;gap:9px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--muted);
+  margin-top:44px;
+}
+.dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  animation:pulse 2s ease infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,0.2)}
+  50%{box-shadow:0 0 0 7px rgba(34,197,94,0.04)}
+}
+
+/* ── SOCIAL STRIP ── */
+.social-strip{
+  display:flex;gap:14px;margin-top:28px;
+}
+.social-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 14px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  color:var(--muted);text-decoration:none;
+  font-size:12px;font-weight:500;
+  transition:border-color 0.2s,color 0.2s;
+}
+.social-btn:hover{border-color:var(--purple);color:var(--text)}
+.social-btn svg{width:14px;height:14px;fill:currentColor;flex-shrink:0}
+
+/* ── SECTIONS ── */
+.section{
+  max-width:860px;margin:auto;
+  padding:96px 48px;
+  border-top:1px solid rgba(26,36,56,0.8);
+}
+
+.section-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--purple);
+  letter-spacing:0.2em;text-transform:uppercase;
+  margin-bottom:36px;
+  display:flex;align-items:center;gap:14px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.about-stat{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:22px;
+}
+.about-stat .num{
+  font-size:36px;font-weight:900;color:var(--purple);
+  line-height:1;margin-bottom:5px;
+}
+.about-stat .lbl{font-size:12px;color:var(--muted)}
+
+.about-text{
+  grid-column:1/-1;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:26px;
+  color:var(--sub);line-height:1.85;font-size:14px;
+}
+.about-text strong{color:var(--text);font-weight:600}
+
+/* ── PROJECTS ── */
+.projects-list{display:grid;gap:14px}
+
+.project-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:28px 32px;
+  transition:border-color 0.25s,transform 0.25s;
+  position:relative;overflow:hidden;
+}
+.project-card::after{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--purple-glow),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.project-card:hover{border-color:rgba(124,58,237,0.35);transform:translateY(-4px)}
+.project-card:hover::after{opacity:1}
+
+.project-card h3{
+  font-size:17px;font-weight:700;
+  color:var(--text);margin-bottom:8px;
+}
+.project-card p{
+  font-size:13px;color:var(--muted);
+  line-height:1.65;margin-bottom:18px;
+}
+
+.tag-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px}
+.tag{
+  font-size:11px;font-family:'JetBrains Mono',monospace;
+  padding:4px 10px;border-radius:6px;
+  background:var(--purple-dim);color:#a78bfa;
+  border:1px solid rgba(124,58,237,0.2);
+}
+.tag.green{
+  background:var(--green-dim);color:#4ade80;
+  border-color:rgba(34,197,94,0.2);
+}
+
+.project-btns{display:flex;gap:10px;flex-wrap:wrap}
+
+.btn-demo{
+  padding:9px 18px;
+  background:var(--purple);
+  color:#fff;font-weight:700;font-size:12px;
+  border-radius:8px;text-decoration:none;
+  transition:opacity 0.2s,transform 0.15s;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.btn-demo:hover{opacity:0.85;transform:translateY(-1px)}
+
+.btn-code{
+  padding:9px 18px;
+  border:1px solid var(--border);
+  color:var(--sub);font-size:12px;font-weight:500;
+  border-radius:8px;text-decoration:none;
+  transition:border-color 0.2s,color 0.2s;
+  display:inline-flex;align-items:center;gap:6px;
+  background:none;
+}
+.btn-code:hover{border-color:var(--purple);color:var(--text)}
+
+.project-wip{opacity:0.45;pointer-events:none}
+
+/* ── SKILLS ── */
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(175px,1fr));
+  gap:12px;
+}
+.skill-item{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:16px 18px;
+  display:flex;align-items:center;gap:12px;
+  transition:border-color 0.2s;
+}
+.skill-item:hover{border-color:rgba(124,58,237,0.3)}
+.skill-icon{
+  width:34px;height:34px;border-radius:8px;
+  background:var(--purple-dim);
+  border:1px solid rgba(124,58,237,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  color:#a78bfa;font-weight:700;font-size:12px;
+  flex-shrink:0;
+}
+.skill-name{font-size:13px;font-weight:600;color:var(--text)}
+.skill-lv{font-size:11px;color:var(--muted);margin-top:2px}
+.skill-bar{
+  height:2px;background:var(--border);
+  border-radius:1px;margin-top:8px;overflow:hidden;
+}
+.skill-bar-fill{
+  height:100%;background:var(--purple);
+  border-radius:1px;
+  width:0;
+  transition:width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── CONTACT ── */
+.contact-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:48px;
+  text-align:center;
+}
+.contact-card h3{
+  font-size:22px;font-weight:700;
+  color:var(--text);margin-bottom:12px;
+}
+.contact-card p{
+  color:var(--muted);font-size:14px;
+  max-width:420px;margin:0 auto 32px;
+  line-height:1.75;
+}
+.contact-social{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  margin-top:20px;
+}
+.contact-social a{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 18px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  color:var(--sub);text-decoration:none;
+  font-size:13px;font-weight:500;
+  transition:border-color 0.2s,color 0.2s;
+}
+.contact-social a:hover{border-color:var(--purple);color:var(--text)}
+.contact-social a svg{width:15px;height:15px;fill:currentColor;flex-shrink:0}
+
+/* ── FOOTER ── */
+footer{
+  text-align:center;padding:36px 40px;
+  border-top:1px solid rgba(26,36,56,0.8);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--muted);
+  display:flex;justify-content:center;align-items:center;gap:16px;
+}
+footer a{color:var(--muted);text-decoration:none;transition:color 0.2s}
+footer a:hover{color:var(--purple)}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.55s ease,transform 0.55s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  nav{padding:14px 20px}
+  .nav-links a:not(.nav-gh){display:none}
+  .hero{padding:100px 20px 60px}
+  .section{padding:70px 20px}
+  .about-grid{grid-template-columns:1fr}
+  .contact-card{padding:32px 20px}
+  footer{flex-direction:column;gap:8px}
+  .social-strip{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">lopcodex.dev</a>
+  <div class="nav-links">
+    <a href="#about">sobre</a>
+    <a href="#projects">projetos</a>
+    <a href="#skills">skills</a>
+    <a href="#contact">contato</a>
+    <a class="nav-gh" href="https://github.com/lopcodex" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">full-stack em formação</div>
+  <h1>Lopcodex<span class="cursor"></span></h1>
+  <p class="hero-sub">
+    Estudante do ensino médio construindo <strong>coisas reais na web</strong> —
+    uma linha de código por vez. UI limpa, código honesto, aprendizado em público.
+  </p>
+
+  <div class="hero-actions">
+    <a class="btn-primary" href="#contact">Entre em contato →</a>
+    <a class="btn-ghost" href="#projects">Ver projetos</a>
+  </div>
+
+  <div class="social-strip">
+    <a class="social-btn" href="https://github.com/lopcodex" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      GitHub
+    </a>
+    <a class="social-btn" href="https://www.linkedin.com/in/joao-pedro-lopes-baillo-968839418" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <a class="social-btn" href="https://discord.gg/Eu5GRJV6B" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      Discord
+    </a>
+    <a class="social-btn" href="mailto:lopcodexstudio@gmail.com">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Email
+    </a>
+  </div>
+
+  <div class="status">
+    <span class="dot"></span>
+    disponível para colaborações e feedbacks
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="section-label">sobre mim</div>
+  <div class="about-grid reveal">
+    <div class="about-stat">
+      <div class="num">2+</div>
+      <div class="lbl">anos aprendendo</div>
+    </div>
+    <div class="about-stat">
+      <div class="num">∞</div>
+      <div class="lbl">commits de aprendizado</div>
+    </div>
+    <div class="about-text">
+      Atualmente aprendendo <strong>HTML, CSS, JavaScript</strong> e <strong>Git</strong>.
+      Meu objetivo é me tornar um desenvolvedor full-stack e construir projetos do mundo real que resolvam problemas de verdade.
+      Acredito em aprender em público — cada erro é documentação para o próximo Lopcodex.
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section">
+  <div class="section-label">projetos</div>
+  <div class="projects-list reveal">
+
+    <div class="project-card">
+      <h3>Portfólio Pessoal</h3>
+      <p>Site responsivo construído com HTML & CSS puro. A base onde tudo começa.</p>
+      <div class="tag-row">
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">Responsivo</span>
+      </div>
+      <div class="project-btns">
+        <a class="btn-demo" href="https://lopcodex.github.io/lopcodex-portfolio" target="_blank" rel="noopener">Ver demo ↗</a>
+        <a class="btn-code" href="https://github.com/lopcodex/lopcodex-portfolio" target="_blank" rel="noopener">Ver código ↗</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <h3>Product Landing Page</h3>
+      <p>Landing page focada em conversão. Estudo de layout, hierarquia visual e UX.</p>
+      <div class="tag-row">
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">UI/UX</span>
+      </div>
+      <div class="project-btns">
+        <a class="btn-demo" href="https://lopcodex.github.io/product-landing" target="_blank" rel="noopener">Ver demo ↗</a>
+        <a class="btn-code" href="https://github.com/lopcodex/product-landing" target="_blank" rel="noopener">Ver código ↗</a>
+      </div>
+    </div>
+
+    <div class="project-card project-wip">
+      <h3>Em breve</h3>
+      <p>Construindo algo com JavaScript. Fica de olho no GitHub.</p>
+      <div class="tag-row">
+        <span class="tag">JavaScript</span>
+        <span class="tag green">WIP</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section">
+  <div class="section-label">skills</div>
+  <div class="skills-grid reveal">
+
+    <div class="skill-item">
+      <div class="skill-icon">H</div>
+      <div style="flex:1">
+        <div class="skill-name">HTML</div>
+        <div class="skill-lv">Estruturação</div>
+        <div class="skill-bar"><div class="skill-bar-fill" data-w="80"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-icon">C</div>
+      <div style="flex:1">
+        <div class="skill-name">CSS</div>
+        <div class="skill-lv">Estilização</div>
+        <div class="skill-bar"><div class="skill-bar-fill" data-w="70"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-icon">JS</div>
+      <div style="flex:1">
+        <div class="skill-name">JavaScript</div>
+        <div class="skill-lv">Aprendendo</div>
+        <div class="skill-bar"><div class="skill-bar-fill" data-w="30"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-icon">Git</div>
+      <div style="flex:1">
+        <div class="skill-name">Git</div>
+        <div class="skill-lv">Versionamento</div>
+        <div class="skill-bar"><div class="skill-bar-fill" data-w="55"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-icon">GH</div>
+      <div style="flex:1">
+        <div class="skill-name">GitHub</div>
+        <div class="skill-lv">Colaboração</div>
+        <div class="skill-bar"><div class="skill-bar-fill" data-w="60"></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="section-label">contato</div>
+  <div class="contact-card reveal">
+    <h3>Vamos conversar?</h3>
+    <p>Aberto a feedbacks, colaborações e oportunidades de aprendizado. Pode mandar mensagem por qualquer canal.</p>
+
+    <a class="btn-primary" href="mailto:lopcodexstudio@gmail.com">
+      Enviar email →
+    </a>
+
+    <div class="contact-social">
+
+      <a href="https://github.com/lopcodex" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        GitHub
+      </a>
+
+      <a href="https://www.linkedin.com/in/joao-pedro-lopes-baillo-968839418" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+
+      <a href="https://discord.gg/Eu5GRJV6B" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        Discord
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Lopcodex</span>
+  <span style="color:var(--border)">·</span>
+  <a href="https://github.com/lopcodex" target="_blank" rel="noopener">github.com/lopcodex</a>
+  <span style="color:var(--border)">·</span>
+  <span>construído enquanto aprendia</span>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.w + '%';
+      });
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:0.1});
+
+document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
+
+só postar? 
